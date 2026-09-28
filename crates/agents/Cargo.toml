@@ -1,0 +1,11 @@
+[package]
+name = "whet-agents"
+description = "One adapter per AI harness (Claude Code, Codex), implementing whet-core's Agent port."
+version.workspace = true
+edition.workspace = true
+
+[dependencies]
+whet-core.workspace = true
+anyhow.workspace = true
+regex.workspace = true
+serde_json.workspace = true
