@@ -75,21 +75,12 @@ whet task list                                      # every active task and its 
 
 ## Install
 
-whet is written in TypeScript and runs on [Bun](https://bun.sh). It also needs git.
-
-**From source** (Bun runs the TypeScript directly, with no build step):
+whet is written in Rust and ships as a single binary. It also needs git.
 
 ```bash
 cd whet
-bun install
-ln -sf "$PWD/src/cli.ts" ~/.local/bin/whet
-```
-
-**As a single binary** (the machine running it needs no Bun or Node):
-
-```bash
-bun run compile                                   # writes dist/whet
-cp dist/whet ~/.local/bin/whet
+cargo build --release                             # writes target/release/whet
+cp target/release/whet ~/.local/bin/whet
 ```
 
 Then set it up:
@@ -140,10 +131,10 @@ Set `WHET_HOME` to keep whet's data somewhere other than `~/.whet`.
 ## How it's built
 
 ```
-src/
-  core/        rules, learning, tasks, git: no knowledge of any AI tool
-  adapters/    one file per AI tool: install, read transcripts, one-shot completion, launch a session
-  cli.ts       the command-line interface
+crates/
+  core/        rules, learning, tasks, git: no knowledge of any AI tool (the Agent trait is its only port)
+  agents/      one adapter per AI tool: install, read transcripts, one-shot completion, launch a session
+  cli/         the `whet` binary
 ```
 
 The core owns all the logic. An adapter is the thin layer that knows where a particular tool keeps its rules file, how its hooks fire, and how to call it. Supporting a new tool means writing one adapter. A desktop UI would call the same core.
@@ -166,9 +157,9 @@ Next:
 ## Development
 
 ```bash
-bun test            # end-to-end tests against throwaway git repos with a fake remote
-bun run typecheck   # tsc --noEmit
-bun run compile     # single binary at dist/whet
+cargo test                  # unit tests, plus end-to-end tests against throwaway git repos with a fake remote
+cargo clippy --all-targets
+cargo build --release       # single binary at target/release/whet
 ```
 
-Hooks installed by `whet install` call whet by absolute path (the binary, or `bun` plus `src/cli.ts`), so they work even when your PATH isn't loaded.
+Hooks installed by `whet install` call whet by the binary's absolute path, so they work even when your PATH isn't loaded.

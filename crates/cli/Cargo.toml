@@ -1,0 +1,19 @@
+[package]
+name = "whet"
+description = "Sharpens your AI coding agent: one rules file for every harness, corrections that turn into rules, and multi-repo tasks without the git ceremony."
+version.workspace = true
+edition.workspace = true
+
+[[bin]]
+name = "whet"
+path = "src/main.rs"
+
+[dependencies]
+whet-core.workspace = true
+whet-agents.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+serde_json.workspace = true
+
+[dev-dependencies]
+tempfile.workspace = true
