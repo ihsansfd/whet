@@ -1,4 +1,4 @@
-1. Fix "instruction leakage"
+# 1. Fix "instruction leakage"
 https://github.com/openai/codex/issues/17224
 
 Sample:
@@ -8,3 +8,6 @@ Possible prompt:
 ```
 Don't leak conversational context into the generated artifact. Use discussion context to make implementation decisions, but don't encode that context as comments or documentation unless it is materially relevant to future maintainers. Avoid meta-comments explaining why you followed my instruction.
 ```
+
+# 2. Seperate tasks per agent correctly
+Using the same AI agent to implement and review the code is a bad idea (agent knows what the unit tests are based on implementation, and may not spot interesting cases had they not know the implementation).
